@@ -1,6 +1,9 @@
 import praw
 import re
 import smtplib
+import gettext
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 reddit = praw.Reddit(client_id = 'oR2piLKI4FtbNw',
                      client_secret = 'uavxhezWwAFBxRIfC5vYA7eXx-0',
@@ -20,9 +23,21 @@ for subscribed in subscriptions:
         email.append(submission.url)
 
 email = '\n'.join(email)
- 
+#print(str(email))
+
+fromaddr = 'daily.reddit.updates@gmail.com'
+toaddr = 'holmesian17@gmail.com'
+msg = MIMEMultipart()
+msg['From'] = fromaddr
+msg['To'] = toaddr
+msg['Subject'] = 'TreadDaily'
+body = str(email)
+msg.attach(MIMEText(body, 'plain'))
+
 server = smtplib.SMTP('smtp.gmail.com', 587)
 server.ehlo()
 server.starttls()
+server.ehlo()
 server.login('daily.reddit.updates@gmail.com', 'zxcvbnm1029384756')
-server.sendmail('daily.reddit.updates@gmail.com', 'email', 'Subject: Here are your reddit threads\n' '\n' + str(email))
+text = msg.as_string()
+server.sendmail(fromaddr, toaddr, text)
