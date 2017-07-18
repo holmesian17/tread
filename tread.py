@@ -1,4 +1,5 @@
 import praw
+import re
 
 reddit = praw.Reddit(client_id = 'oR2piLKI4FtbNw',
                      client_secret = 'uavxhezWwAFBxRIfC5vYA7eXx-0',
@@ -6,11 +7,13 @@ reddit = praw.Reddit(client_id = 'oR2piLKI4FtbNw',
                      username = 'username',
                      password = 'password')
 
-print(reddit.user.me())
-srs = ['baseball', 'hiphopheads', 'python' ]
+subscriptions = list(reddit.user.subreddits(limit=None))
 
-for sr in srs:
-    subreddit = reddit.subreddit(sr)
+
+for subscribed in subscriptions:
+    pull_list = re.compile(r'Subreddit(display_name=)')
+    subscribed = pull_list.sub('', str(subscribed))
+    subreddit = reddit.subreddit(subscribed)
     for submission in subreddit.top(limit=5):
         print(submission.title)
-        print(submission.url)   
+        print(submission.url)
