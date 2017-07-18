@@ -15,15 +15,14 @@ for subscribed in subscriptions:
     pull_list = re.compile(r'Subreddit(display_name=)')
     subscribed = pull_list.sub('', str(subscribed))
     subreddit = reddit.subreddit(subscribed)
-    for submission in subreddit.top(limit=1):
+    for submission in subreddit.top('day', limit=1):
         email.append(submission.title) #TODO: needs to send the title, url of the post, subreddit name and format them nicely
         email.append(submission.url)
 
-email = ' '.join(email) 
+email = '\n'.join(email)
+ 
 server = smtplib.SMTP('smtp.gmail.com', 587)
 server.ehlo()
 server.starttls()
 server.login('daily.reddit.updates@gmail.com', 'zxcvbnm1029384756')
-server.sendmail('daily.reddit.updates@gmail.com', 'holmesian17@gmail.com', 'Subject: Here are your reddit threads\n' '\n' + str(email))
-
-
+server.sendmail('daily.reddit.updates@gmail.com', 'email', 'Subject: Here are your reddit threads\n' '\n' + str(email))
