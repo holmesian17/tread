@@ -5,8 +5,8 @@ import gettext
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-reddit = praw.Reddit(client_id = 'oR2piLKI4FtbNw',
-                     client_secret = 'uavxhezWwAFBxRIfC5vYA7eXx-0',
+reddit = praw.Reddit(client_id = 'client-id',
+                     client_secret = 'client_secret',
                      user_agent = 'tread by u/spinman17',
                      username = 'username',
                      password = 'password')
