@@ -18,15 +18,15 @@ for subscribed in subscriptions:
     pull_list = re.compile(r'Subreddit(display_name=)')
     subscribed = pull_list.sub('', str(subscribed))
     subreddit = reddit.subreddit(subscribed)
-    for submission in subreddit.top('day', limit=1):
-        email.append(submission.title) #TODO: needs to send the title, url of the post, subreddit name and format them nicely
-        email.append(submission.url)
-
+    for submission in subreddit.top('day', limit=3):
+        email.append(subscribed)
+        email.append(submission.title) #TODO: needs to send the title, url of the post (not just the link), organize them all under their subreddit name and format them nicely
+        email.append('https://www.reddit.com' + submission.permalink)
+        
 email = '\n'.join(email)
-#print(str(email))
 
 fromaddr = 'daily.reddit.updates@gmail.com'
-toaddr = 'holmesian17@gmail.com'
+toaddr = 'email'
 msg = MIMEMultipart()
 msg['From'] = fromaddr
 msg['To'] = toaddr
