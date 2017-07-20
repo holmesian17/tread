@@ -19,13 +19,13 @@ for subscribed in subscriptions:
     subreddit = reddit.subreddit(subscribed)
     for submission in subreddit.top('day', limit=3):
         email.append(subscribed)
-        email.append(submission.title) #TODO: needs to send the title, url of the post (not just the link), organize them all under their subreddit name and format them nicely
+        email.append(submission.title)
         email.append('https://www.reddit.com' + submission.permalink)
         
 email = '\n'.join(email)
 
-fromaddr = 'daily.reddit.updates@gmail.com'
-toaddr = 'email'
+fromaddr = 'email address for sending'
+toaddr = 'email address for receiving'
 msg = MIMEMultipart()
 msg['From'] = fromaddr
 msg['To'] = toaddr
@@ -33,10 +33,10 @@ msg['Subject'] = 'TreadDaily'
 body = str(email)
 msg.attach(MIMEText(body, 'plain'))
 
-server = smtplib.SMTP('smtp.gmail.com', 587)
+server = smtplib.SMTP('smtp.gmail.com', 587) #if not using gmail, look up what smtp settings you would use
 server.ehlo()
 server.starttls()
 server.ehlo()
-server.login('daily.reddit.updates@gmail.com', 'zxcvbnm1029384756')
+server.login('email address for sending', 'password for that email adress')
 text = msg.as_string()
 server.sendmail(fromaddr, toaddr, text)
